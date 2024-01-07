@@ -6,17 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Member extends Model
+class Pinjam extends Model
 {
     use HasFactory, SoftDeletes;
-
-    protected $table = 'members';
-    protected $fillable = [
-        'nama',
-        'alamat',
-        'umur',
-        'jenis_kelamin',
-        'email',
-        'no_telp'
-    ];
 }

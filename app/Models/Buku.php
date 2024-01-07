@@ -6,17 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Member extends Model
+class Buku extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'members';
+    protected $table = 'bukus';
     protected $fillable = [
-        'nama',
-        'alamat',
-        'umur',
-        'jenis_kelamin',
-        'email',
-        'no_telp'
+        'nomor_buku',
+        'judul_buku',
+        'jenis_buku',
+        'nomor_rak'
     ];
 }
