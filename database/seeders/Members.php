@@ -17,7 +17,7 @@ class Members extends Seeder
             Member::create([
                 'nama' => $faker->name,
                 'alamat' => $faker->text,
-                'umur' => $faker->numberBetween(20, 90),
+                'umur' => $faker->numberBetween(20, 60),
                 'jenis_kelamin' => $faker->randomElement(['laki-laki', 'perempuan']),
                 'email' => $faker->safeEmail,
                 'no_telp' => $faker->phoneNumber
