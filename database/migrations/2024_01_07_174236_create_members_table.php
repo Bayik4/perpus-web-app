@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('umur', 3)->nullable();
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan'])->nullable();
             $table->string('email', 100)->nullable();
-            $table->string('no_telp', 14)->nullable();
+            $table->string('no_telp')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
