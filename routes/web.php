@@ -24,3 +24,7 @@ Route::get('buku', [BukuController::class, 'index']);
 Route::get('member', [MemberController::class, 'index']);
 Route::get('penjaga', [PenjagaController::class, 'index']);
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
