@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BukuController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PenjagaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('buku', [BukuController::class, 'index']);
+Route::get('member', [MemberController::class, 'index']);
+Route::get('penjaga', [PenjagaController::class, 'index']);
+
