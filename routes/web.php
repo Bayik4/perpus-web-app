@@ -20,7 +20,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('buku', [BukuController::class, 'index']);
+Route::get('/buku', [BukuController::class, 'index']);
+Route::get('/buku/create', [BukuController::class, 'create']);
+Route::post('/buku/save', [BukuController::class, 'store']);
+
+
+
 Route::get('member', [MemberController::class, 'index']);
 Route::get('penjaga', [PenjagaController::class, 'index']);
 

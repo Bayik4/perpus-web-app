@@ -12,8 +12,13 @@ class BukuController extends Controller
      */
     public function index()
     {
-        $databuku = Buku::all();
-        return View('buku.index', compact('databuku'));
+        $databukuaktif = Buku::all();
+        $databukupasif = Buku::onlyTrashed()->get();
+        return View('buku.index', compact('databukuaktif', 'databukupasif'));
+    }
+
+    public function create() {
+        return View('buku.add');
     }
 
     /**
@@ -21,7 +26,13 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validasiData = $request->validate([
+            'nomor_buku' => ['required',],
+            'judul_buku' => ['required'],
+            'jenis_buku' => ['required'],
+            'nomor_rak' => ['required']
+        ]);
+        return $request->all();
     }
 
     /**
