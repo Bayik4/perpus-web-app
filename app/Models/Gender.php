@@ -6,17 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Penjaga extends Model
+class Gender extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'penjagas';
+    protected $table = 'genders';
     protected $fillable = [
-        'nama',
-        'alamat',
-        'umur',
-        'jenis_kelamin',
-        'email',
-        'no_telp'
+        'gender'
     ];
+
+    public function member() {
+        return $this->hasOne(Member::class);
+    }
+
+    public function user() {
+        return $this->hasOne(User::class);
+    }
 }

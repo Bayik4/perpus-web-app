@@ -11,12 +11,29 @@ class Member extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'members';
+    // protected $fillable = [
+    //     'nama',
+    //     'alamat',
+    //     'umur',
+    //     'jenis_kelamin',
+    //     'email',
+    //     'no_telp'
+    // ];
+
     protected $fillable = [
         'nama',
-        'alamat',
         'umur',
-        'jenis_kelamin',
         'email',
+        'alamat',
+        'gender_id',
         'no_telp'
     ];
+
+    public function gender() {
+        return $this->belongsTo(Gender::class);
+    }
+
+    public function pinjam() {
+        return $this->hasOne(Pinjam::class);
+    }
 }

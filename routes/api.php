@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\API\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('coba', [BukuController::class, 'index']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::get('/user', function(Request $request) {
+        return $request->user();
+    });
+
+    // logout
+    Route::post('/logout', [AuthController::class, 'logout']);
+});

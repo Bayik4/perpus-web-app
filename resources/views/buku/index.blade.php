@@ -1,107 +1,157 @@
-<!doctype html>  
-<html lang="en">  
- <head>  
-  <meta charset="utf-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1">  
-  <title>Data Buku</title>  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
- </head>  
- <body>  
-    <div class="container"> 
+@extends('adminlte::page')
+@section('content_header')
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+        <h2 class="font-weight-bold mt-2">DATA BUKU</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url('/home') }}">Home</a></li>
+                <li class="breadcrumb-item active">Data Buku</li>
+            </ol>
+        </nav>
+    </div>
+@endsection
+
+@section('plugins.Datatables', true)
+
+@section('content')
+    <div class="container">
         <div class="row">
             <div class="col">
-                <a href="{{url('buku/create')}}" class="btn btn-sm btn-primary mt-4 mb-2">  
-                    <i class="fa fa-plus" aria-hidden="true"></i> Tambah Data Buku Baru   
-                </a> 
                 <div class="card">
                     <div class="card-header">
-                        <h2>Data Buku Aktif</h2>
+                        <div class="container" style="text-align: end;">
+                            <a href="{{ url('buku/create') }}" class="btn btn-sm btn-primary">
+                                <i class="fa fa-plus" aria-hidden="true"></i> Tambah Data Buku
+                            </a>
+                            <a href="{{ url('buku_pasif') }}" class="btn btn-sm btn-outline-primary">
+                                Data Pasif
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <table class="table table-sm table-bordered table-condensed table-striped">  
-                            <thead>  
-                                <tr>  
-                                    <th style="text-align: right;">#</th>  
-                                    <th>Nomor Buku</th>
-                                    <th>Judul Buku</th>  
-                                    <th>Jenis Buku</th>  
+                        <table class="table table-sm table-bordered table-condensed table-striped" id="tabelbuku">
+                            <thead>
+                                <tr style="text-align: center;">
+                                    <th>No </th>
+                                    {{-- <th>Sampul Buku</th> --}}
+                                    <th>Kode Buku</th>
+                                    <th>Judul Buku</th>
                                     <th>Nomor Rak</th>
-                                </tr>  
-                            </thead>  
-                            <tbody>  
-                                @foreach ($databukuaktif as $dba)  
-                                <tr>  
-                                    <th>  
-                                        {{ $dba->id }}  
-                                    </th>  
-                                    <td>  
-                                        {{ $dba->nomor_buku }}      
-                                    </td>  
-                                    <td>
-                                        {{ $dba->judul_buku }}
-                                    </td>  
-                                    <td>  
-                                        {{ $dba->jenis_buku }}  
-                                    </td>  
-                                    <td>  
-                                        {{ $dba->nomor_rak }}  
-                                    </td>  
-                                </tr>  
-                                @endforeach  
-                            </tbody>  
-                        </table>  
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="card mt-5">
-                    <div class="card-header">
-                        <h2>Data Buku Pasif</h2>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-sm table-bordered table-condensed table-striped">  
-                            <thead>  
-                                <tr>  
-                                    <th style="text-align: right;">#</th>  
-                                    <th>Nomor Buku</th>
-                                    <th>Judul Buku</th>  
-                                    <th>Jenis Buku</th>  
-                                    <th>Nomor Rak</th>
-                                </tr>  
-                            </thead>  
-                            <tbody>  
-                                @foreach ($databukupasif as $dbp)  
-                                <tr>  
-                                    <th>  
-                                        {{ $dbp->id }}  
-                                    </th>  
-                                    <td>  
-                                        {{ $dbp->nomor_buku }}  
-                                    </td>  
-                                    <td>
-                                        {{ $dbp->judul_buku }}
-                                    </td>  
-                                    <td>  
-                                        {{ $dbp->jenis_buku }}  
-                                    </td>  
-                                    <td>  
-                                        {{ $dbp->nomor_rak }}  
-                                    </td>  
-                                </tr>  
-                                @endforeach  
-                            </tbody>  
-                        </table>  
+                                    <th>Jumlah Buku</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $no = 1;
+                                @endphp
+                                @foreach ($databukuaktif as $dba)
+                                    <tr style="text-align: center;">
+                                        <th style="text-align: right;">
+                                            {{ $no++ }}
+                                        </th>
+                                        <td>
+                                            {{ $dba->kode_buku }}
+                                        </td>
+                                        <td>
+                                            {{ $dba->judul_buku }}
+                                        </td>
+                                        <td>
+                                            {{ $dba->rak->nomor_rak }}
+                                        </td>
+                                        <td>
+                                            {{ $dba->jumlah_buku }}
+                                        </td>
+                                        <td class="aksi">
+                                            <a href="{{ url('/buku') }}/{{ $dba->id }}/edit"
+                                                class="btn btn-sm btn-success" title="edit"><i
+                                                    class="fas fa-edit"></i></a> |
+                                            {{-- <button class="btn btn-sm btn-warning" title="hapus pasif"
+                                                onclick="aksiData('{{ $dba->id }}', 'pasif')"><i
+                                                    class="fas fa-trash-alt"></i></button> | --}}
+                                            <a href="{{ url('buku/detail') }}/{{ $dba->id }}"
+                                                class="btn btn-sm btn-info" title="detail"><i
+                                                    class="fas fa-info-circle"></i></a>
+                                        </td>
+                                    </tr>
+                                    <form action="{{ url('/buku') }}" method="post" id="formpasif{{ $dba->id }}">
+                                        @csrf
+                                        @method('delete')
+                                        <input type="hidden" name="id" id="val" value="{{ $dba->id }}">
+                                        <input type="hidden" name="aksi" value="pasif">
+                                    </form>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
 
+@section('plugins.Sweetalert2', true)
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>   
- </body>  
-</html>  
+@section('js')
+    <script>
+        @if (session('pesansukses'))
+            let msg = @json(session()->pull('pesansukses'));
+            Swal.fire({
+                title: "Sukses!",
+                text: msg,
+                icon: "success",
+            });
+        @endif
+        @if (session('pesangagal'))
+            let msg = @json(session()->pull('pesangagal'));
+            Swal.fire({
+                title: "Gagal!",
+                text: msg,
+                icon: "failed",
+            });
+        @endif
+
+        // const aksiData = (id, aksi) => {
+        //     Swal.fire({
+        //         title: "Are you sure?",
+        //         text: "You won't be able to revert this!",
+        //         icon: "warning",
+        //         showCancelButton: true,
+        //         confirmButtonColor: "#3085d6",
+        //         cancelButtonColor: "#d33",
+        //         confirmButtonText: "Yes, delete it!",
+        //     }).then((result) => {
+        //         if (result.value) {
+        //             switch (aksi) {
+        //                 case 'pasif':
+        //                     // alert(document.querySelector('#val').value)
+        //                     document.getElementById('formpasif' + id).submit();
+        //                     break;
+        //                 case 'restore':
+        //                     break;
+        //                 case 'hapuspermanen':
+        //                     break;
+        //             }
+        //         }
+        //     });
+        // }
+
+        $('#tabelbuku').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": false,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    </script>
+@endsection
+
+@section('css')
+    <style>
+        .aksi {
+            text-align: center;
+        }
+    </style>
+@endsection

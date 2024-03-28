@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('pinjams', function (Blueprint $table) {
             $table->id();
-            $table->string('no_member')->nullable();
-            $table->string('nama_member', 100)->nullable();
-            $table->string('judul_buku', 100)->nullable();
-            $table->string('nomor_buku', 100)->nullable();
-            $table->string('nama_penjaga', 100)->nullable();
-            $table->string('no_penjaga', 100)->nullable();
-            $table->date('tanggal_pinjam')->nullable();
-            $table->date('tanggal_kembali')->nullable();
+            $table->foreignId('buku_id')->constrained();
+            $table->foreignId('member_id')->costrained();
+            $table->foreignId('user_id')->constrained();
+            $table->date('tanggal_pinjam')->default(now());
+            $table->date('tanggal_kembali');
+            $table->double('jumlah_dipinjam', 1, 0);
             $table->timestamps();
             $table->softDeletes();
         });
