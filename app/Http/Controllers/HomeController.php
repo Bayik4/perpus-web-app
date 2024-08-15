@@ -35,7 +35,7 @@ class HomeController extends Controller
 
 
         $jumlahmember = count(Member::all());
-        $datap = Pinjam::where('tanggal_pinjam', '=', $date)->get();
+        $datap = DB::table('pinjams')->where('tanggal_pinjam', $date)->get();
         $datapinjamnow = count($datap);
 
         $bukukembali = Pinjam::with('buku', 'member')->where('tanggal_kembali', '=', $date)->get();

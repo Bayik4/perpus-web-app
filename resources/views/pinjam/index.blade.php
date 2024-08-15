@@ -47,12 +47,14 @@
                                 @csrf
                                 <div class="in-con d-flex align-items-end justify-content-around" style="width: 700px;">
                                     <div class="in-buku">
-                                        <p>Buku ID :</p>
-                                        <input type="text" class="pinjam" id="buku" name="buku_id" readonly>
+                                        <p>Judul Buku :</p>
+                                        <input type="hidden" class="pinjam" id="buku" name="buku_id" readonly>
+                                        <input type="text" class="pinjam" id="judul_buku" readonly>
                                     </div>
                                     <div class="in-member">
-                                        <p>Member ID :</p>
-                                        <input type="text" class="pinjam" id="member" name="member_id" readonly>
+                                        <p>Nama Member :</p>
+                                        <input type="hidden" class="pinjam" id="member" name="member_id" readonly>
+                                        <input type="text" class="pinjam" id="member_name" readonly>
                                     </div>
                                     <div class="in-tanggal">
                                         <p>Tanggal Kembali :</p>
@@ -60,16 +62,17 @@
                                             required>
                                     </div>
                                     <div class="in-user">
-                                        <p>Petugas ID :</p>
-                                        <input type="text" class="pinjam" name="user_id" value="{{ $user->id }}"
+                                        <p>Nama Petugas :</p>
+                                        <input type="hidden" class="pinjam" name="user_id" value="{{ $user->id }}"
                                             readonly>
+                                        <input type="text" class="pinjam" value="{{ $user->name }}" readonly>
                                     </div>
                                     <div class="in-jumlah">
                                         <p>Jumlah Buku</p>
                                         <input type="number" class="pinjam" name="jumlah_buku" min="1"
                                             max="10">
                                     </div>
-                                    <button type="submit" class="btn btn-xl btn-success">sumbit</button>
+                                    <button type="submit" class="btn btn-xl btn-success">Sumbit</button>
                                 </div>
                             </form>
                         </div>
@@ -92,41 +95,47 @@
         $('#search').on('keyup', function() {
             var query = $(this).val();
 
-            $.ajax({
-                type: "GET",
-                url: "search",
-                data: {
-                    'search': query
-                },
-                success: function(response) {
-                    $('#search-list').html(response);
-                }
-            });
+            if (query != "") {
+                $.ajax({
+                    type: "GET",
+                    url: "search",
+                    data: {
+                        'search': query
+                    },
+                    success: function(response) {
+                        $('#search-list').html(response);
+                    }
+                });
+            }
         });
 
         $('#searchm').on('keyup', function() {
             var query = $(this).val();
 
-            $.ajax({
-                type: "GET",
-                url: "searchm",
-                data: {
-                    'searchm': query
-                },
-                success: function(response) {
-                    $('#search-listm').html(response);
-                }
-            });
+            if (query != "") {
+                $.ajax({
+                    type: "GET",
+                    url: "searchm",
+                    data: {
+                        'searchm': query
+                    },
+                    success: function(response) {
+                        $('#search-listm').html(response);
+                    }
+                });
+            }
         });
 
 
 
-        const aksi = (id) => {
+        const aksi = (id, judul_buku) => {
             document.querySelector('#buku').value = id;
+            document.querySelector('#judul_buku').value = judul_buku;
         }
 
-        const aksim = (id) => {
+        const aksim = (id, name) => {
             document.querySelector('#member').value = id;
+            document.querySelector('#member_name').value = name;
         }
 
         @if (session('pesansukses'))
@@ -142,7 +151,7 @@
             Swal.fire({
                 title: "Gagal!",
                 text: msg,
-                icon: "failed"
+                icon: "error"
             });
         @endif
     </script>

@@ -8,10 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -55,20 +56,24 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function adminlte_image() {
+    public function adminlte_image()
+    {
         // return Auth::user()->foto_user;
         return Auth::user()->foto_user;
     }
 
-    public function adminlte_desc() {
+    public function adminlte_desc()
+    {
         return Auth::user()->deskripsi;
     }
 
-    public function gender() {
-        return $this->belonsTo(Gender::class);
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class);
     }
 
-    public function pinjam() {
+    public function pinjam()
+    {
         return $this->hasOne(Pinjam::class);
     }
 }

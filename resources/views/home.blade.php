@@ -60,7 +60,7 @@
                             <table class="table table-sm table-bordered table-condensed table-striped" id="tabelbuku"
                                 style="text-align: center;">
                                 <thead>
-                                    <tr>
+                                    <tr style="font-size: 14px;">
                                         <th>No</th>
                                         <th>Kode Buku</th>
                                         <th>Nama Peminjam/ID</th>
@@ -88,9 +88,9 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>{{ $bukukembali }}</h3>
+                        <h3>{{ $datapinjamnow }}</h3>
 
-                        <p>Buku Dikembalikan</p>
+                        <p>Buku Dipinjam Hari Ini</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>

@@ -19,15 +19,19 @@ class PinjamController extends Controller
         return view('pinjam.index', ['user' => $user]);
     }
 
-    public function search(Request $request) {
-        if($request->ajax()) {
-            $data = Buku::where('kode_buku', 'like', '%'.$request->search.'%')
-                        ->orWhere('judul_buku', 'like', '%'.$request->search.'%')
-                        ->get();
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Buku::where([
+                ['kode_buku', 'like', '%' . $request->search . '%'],
+                ['jumlah_buku', '>', 0]
+            ])
+                ->orWhere('judul_buku', 'like', '%' . $request->search . '%')
+                ->get();
         }
 
         $output = '';
-        if(count($data) > 0 ) {
+        if (count($data) > 0) {
             $output = '
                 <table class="table table-sm table-bordered table-condensed table-striped">
                 <thead>
@@ -39,19 +43,19 @@ class PinjamController extends Controller
                     </tr>
                 </thead>
                 <tbody>';
-                    foreach($data as $row) {
-                        $output .= '
+            foreach ($data as $row) {
+                $output .= '
                             <tr style="text-align: center;">
-                                <td>'.$row->kode_buku.'</td>
-                                <td style="text-align: left;">'.$row->judul_buku.'</td>
-                                <td>'.$row->penulis.'</td>
+                                <td>' . $row->kode_buku . '</td>
+                                <td style="text-align: left;">' . $row->judul_buku . '</td>
+                                <td>' . $row->penulis . '</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success" onclick="aksi('.$row->id.')"><i class="fa fa-plus"></i></button>
+                                    <button class="btn btn-sm btn-success" onclick="aksi(' . $row->id . ',' . '`' . $row->judul_buku . '`' . ')"><i class="fa fa-plus"></i></button>
                                 </td>
                             </tr>
                         ';
-                    }
-                $output .= ' 
+            }
+            $output .= ' 
                 </tbody>
             </table>
             ';
@@ -62,15 +66,16 @@ class PinjamController extends Controller
         return $output;
     }
 
-    public function searchm(Request $request) {
-        if($request->ajax()) {
-            $data = Member::where('id', 'like', '%'.$request->searchm.'%')
-                        ->orWhere('nama', 'like', '%'.$request->searchm.'%')
-                        ->get();
+    public function searchm(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Member::where('id', 'like', '%' . $request->searchm . '%')
+                ->orWhere('nama', 'like', '%' . $request->searchm . '%')
+                ->get();
         }
 
         $output = '';
-        if(count($data) > 0) {
+        if (count($data) > 0) {
             $output = '
                 <table class="table table-sm table-bordered table-condensed table-striped">
                 <thead>
@@ -81,18 +86,18 @@ class PinjamController extends Controller
                     </tr>
                 </thead>
                 <tbody>';
-                    foreach($data as $row) {
-                        $output .= '
+            foreach ($data as $row) {
+                $output .= '
                             <tr style="text-align: center;">
-                                <td>'.$row->id.'</td>
-                                <td style="text-align: left;">'.$row->nama.'</td>
+                                <td>' . $row->id . '</td>
+                                <td style="text-align: left;">' . $row->nama . '</td>
                                 <td>
-                                    <button class="btn btn-sm btn-success" onclick="aksim('.$row->id.')"><i class="fa fa-plus"></i></button>
+                                    <button class="btn btn-sm btn-success" onclick="aksim(' . $row->id . ',' . '`' . $row->nama . '`' . ')"><i class="fa fa-plus"></i></button>
                                 </td>
                             </tr>
                         ';
-                    }
-                $output .= ' 
+            }
+            $output .= ' 
                 </tbody>
             </table>
             ';
@@ -122,7 +127,7 @@ class PinjamController extends Controller
 
         $stok_buku = DB::table('bukus')->select('jumlah_buku as jb')->where('id', '=', $buku_id)->get();
 
-        foreach($stok_buku as $sb) {
+        foreach ($stok_buku as $sb) {
             $jb = $sb->jb;
         }
 
@@ -137,16 +142,16 @@ class PinjamController extends Controller
                 'jumlah_dipinjam' => $request->jumlah_buku
             ]);
 
-            if($request->jumlah_buku > (int)$jb) {
-                if((int)$jb == 0) {
+            if ($request->jumlah_buku > (int)$jb) {
+                if ((int)$jb == 0) {
                     DB::rollback();
-                    return redirect('pinjam')->with('pesangagal', 'stok habis!!');              
+                    return redirect('pinjam')->with('pesangagal', 'stok habis!!');
                 } else {
                     DB::rollback();
-                    return redirect('pinjam')->with('pesangagal', 'stok melebihi batas!!, sisa stok = '.$jb);                
+                    return redirect('pinjam')->with('pesangagal', 'stok melebihi batas!!, sisa stok = ' . $jb);
                 }
             } else {
-                if((int)$jb > 0) {
+                if ((int)$jb > 0) {
                     DB::table('bukus')->where('id', '=', $buku_id)->decrement('jumlah_buku', $request->jumlah_buku);
                 } else {
                     return redirect('pinjam')->with('pesangagal', 'stok habis');
